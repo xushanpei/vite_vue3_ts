@@ -1657,7 +1657,7 @@ vue-tsc@^0.0.24:
   dependencies:
     unzipper "0.10.11"
 
-vue@^3.0.5:
+vue@^3.2.2:
   version "3.2.22"
   resolved "https://registry.npmmirror.com/vue/download/vue-3.2.22.tgz?cache=0&sync_timestamp=1636947969556&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fvue%2Fdownload%2Fvue-3.2.22.tgz#46e4dd89e98cc4b851ae1eb35f00ced413a34bb7"
   integrity sha512-KD5nZpXVZquOC6926Xnp3zOvswrUyO9Rya7ZUoxWFQEjFDW4iACtwzubRB4Um2Om9kj6CaJOqAVRDSFlqLpdgw==
