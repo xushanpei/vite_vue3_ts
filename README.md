@@ -394,7 +394,23 @@ npx mrm lint-staged
   }
 ```
 
-### 配置文件引用别名
+好了,到这里代码格式化配置基本大功告成了!!!
+
+可以修改部分代码尝试 git commit ,你会发现代码将自动格式化:
+
+提交前的代码(发现编辑器爆红了): 
+
+![](https://files.mdnice.com/user/16854/bb28c3a6-4751-459a-a87d-c4191f758e6b.png)
+
+执行 commit 操作,控制台可以看到走了哪些流程:
+
+![](https://files.mdnice.com/user/16854/82a2612e-44d6-4015-acef-62606b1a23ce.png)
+
+commit 后的代码,是不是已经被格式化了
+
+![](https://files.mdnice.com/user/16854/4abce158-2d3f-43e8-854a-70536c89d116.png)
+
+### 配置文件引用别名alias
 
 > 直接修改 vite.config.ts 文件配置:
 
