@@ -352,7 +352,30 @@ yarn lint
 yarn prettier
 ```
 
-### 配置 husk
+### 配置 husky + lint-staged
+>使用husky + lint-staged助力团队编码规范, husky&lint-staged安装推荐使用 mrm, 它将根据 package.json 依赖项中的代码质量工具来安装和配置 husky 和 lint-staged，因此请确保在此之前安装并配置所有代码质量工具，如 Prettier 和 ESlint
+
+### 首先安装 mrm
+```bash
+npm i mrm -D --registry=https://registry.npm.taobao.org
+```
+
+`husky` 是一个为 git 客户端增加 `hook` 的工具。安装后，它会自动在仓库中的 `.git/` 目录下增加相应的钩子；比如 `pre-commit` 钩子就会在你执行 `git commit` 的触发。
+
+那么我们可以在 `pre-commit` 中实现一些比如 `lint 检查`、`单元测试`、`代码美化`等操作。当然，`pre-commit` 阶段执行的命令当然要保证其速度不要太慢，每次 commit 都等很久也不是什么好的体验。
+
+`lint-staged`，一个仅仅过滤出 Git 代码暂存区文件(被 `git add` 的文件)的工具；这个很实用，因为我们如果对整个项目的代码做一个检查，可能耗时很长，如果是老项目，要对之前的代码做一个代码规范检查并修改的话，这可能就麻烦了呀，可能导致项目改动很大。
+
+所以这个 `lint-staged`，对团队项目和开源项目来说，是一个很好的工具，它是对个人要提交的代码的一个规范和约束
+
+### 安装 husky
+```bash
+npx mrm husky
+```
+### 安装 lint-staged
+```bash
+npx mrm lint-staged
+```
 
 ### 配置文件引用别名
 
@@ -375,3 +398,24 @@ export default defineConfig({
 
 ```
 
+
+
+
+参考:
+
+1. https://mp.weixin.qq.com/s/cfw1KFdrwV8GzDN1pnu_kQ
+2. https://cn.vitejs.dev/guide/api-hmr.html
+
+- 文章概括
+  - 搭建前准备: Chrome 器插件 Vscode 插件
+  - 介绍 vue3.x
+  - 介绍 vite (vite 官方起步)
+  - 使用 vite 创建脚手架
+  - 设置代风格(eslint prettier gitHooks)
+  - 路由集成 (meta 增加缓存)
+  - 请求封装
+  - vuex/pinia
+  - 登录 和 布局组件
+  - 配置环境变量
+  - UI 组件库
+  - 打包优化
