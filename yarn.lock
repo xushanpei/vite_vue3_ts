@@ -257,6 +257,11 @@
     "@vue/compiler-dom" "3.2.22"
     "@vue/shared" "3.2.22"
 
+"@vue/devtools-api@^6.0.0-beta.18":
+  version "6.0.0-beta.20.1"
+  resolved "https://registry.npmmirror.com/@vue/devtools-api/download/@vue/devtools-api-6.0.0-beta.20.1.tgz#5b499647e929c35baf2a66a399578f9aa4601142"
+  integrity sha512-R2rfiRY+kZugzWh9ZyITaovx+jpU4vgivAEAiz80kvh3yviiTU3CBuGuyWpSwGz9/C7TkSWVM/FtQRGlZ16n8Q==
+
 "@vue/reactivity@3.2.22":
   version "3.2.22"
   resolved "https://registry.npmmirror.com/@vue/reactivity/download/@vue/reactivity-3.2.22.tgz?cache=0&sync_timestamp=1636947968011&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40vue%2Freactivity%2Fdownload%2F%40vue%2Freactivity-3.2.22.tgz#88655c0b4febc561136e6550e329039f860caa0a"
@@ -3145,7 +3150,7 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@^4.3.2:
+typescript@^4.5.2:
   version "4.5.2"
   resolved "https://registry.npmmirror.com/typescript/download/typescript-4.5.2.tgz#8ac1fba9f52256fdb06fb89e4122fa6a346c2998"
   integrity sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw==
@@ -3322,6 +3327,13 @@ vue-eslint-parser@^8.0.1:
     esquery "^1.4.0"
     lodash "^4.17.21"
     semver "^7.3.5"
+
+vue-router@4:
+  version "4.0.12"
+  resolved "https://registry.npmmirror.com/vue-router/download/vue-router-4.0.12.tgz#8dc792cddf5bb1abcc3908f9064136de7e13c460"
+  integrity sha1-jceSzd9bsavMOQj5BkE23n4TxGA=
+  dependencies:
+    "@vue/devtools-api" "^6.0.0-beta.18"
 
 vue-tsc@^0.0.24:
   version "0.0.24"

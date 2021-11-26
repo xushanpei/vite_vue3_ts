@@ -34,7 +34,7 @@ Vue2 与 Vue3 最大的区别: Vue2 使用`Options API`而 Vue3 使用的`Compos
 - 🔩 通用的插件接口
 - 🔑 完全类型化的 API
 
-Vite （法语意为 “迅速”，发音 /vit/）是一种全新的前端构建工具，它极大地改善了前端开发体验。
+`Vite` （法语意为 “迅速”，发音 /vit/）是一种全新的前端构建工具，它极大地改善了前端开发体验。
 
 它主要由两部分组成：
 
@@ -48,7 +48,7 @@ Vite （法语意为 “迅速”，发音 /vit/）是一种全新的前端构�
 
 > 兼容性注意:Vite 需要 `Node.js` 版本 `>= 12.0.0`。
 
-1. 第一步: 在需要创建项目文件目录下打开 cmd 运行以下命令
+1. 第一步: 在需要创建项目文件目录下打开 `cmd` 运行以下命令
 
 ```bash
 # npm 6.x
@@ -70,7 +70,7 @@ yarn create @vitejs/app vite_vue3_ts --template
 ![](https://files.mdnice.com/user/16854/0280afe9-2ba2-4dce-bdc4-6b756151fd5a.png)
 ![](https://files.mdnice.com/user/16854/d1a58b76-2bc7-489b-966c-fb2a4136e39a.png)
 
-3. 第三步: cd 到项目文件夹,安装依赖,启动项目
+3. 第三步: `cd` 到项目文件夹,安装依赖,启动项目
 
 ```bash
 # 进入项目文件夹
@@ -101,19 +101,21 @@ yarn add eslint-plugin-prettier --dev
 yarn add @typescript-eslint/parser --dev
 ```
 
-注意: 如果 eslint 安装报错:
+注意: 如果 `eslint` 安装报错:
+
 ![](https://files.mdnice.com/user/16854/98ff3635-d460-4a8f-b3d3-2597a03e56c0.png)
+
 可以尝试运行以下命令:
 
 ```bash
 yarn config set ignore-engines true
 ```
 
-运行成功后再次执行 eslint 安装命令
+运行成功后再次执行 `eslint` 安装命令
 
 ### 项目下新建 .eslintrc.js
 
-> 配置 eslint 校验规则:
+> 配置 `eslint` 校验规则:
 
 ```js
 module.exports = {
@@ -144,7 +146,7 @@ module.exports = {
   plugins: ['vue', '@typescript-eslint', 'prettier'],
   rules: {
     '@typescript-eslint/ban-ts-ignore': 'off',
-    '@typescript-eslint/no-unused-vars':'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-var-requires': 'off',
@@ -263,7 +265,7 @@ module.exports = {
     'no-fallthrough': 'warn',
     'no-extra-boolean-cast': 'warn',
     'no-case-declarations': 'warn',
-    'no-async-promise-executor': 'warn'
+    'no-async-promise-executor': 'warn',
   },
   globals: {
     defineProps: 'readonly',
@@ -292,7 +294,7 @@ yarn add prettier --dev
 
 ### 解决 eslint 和 prettier 冲突
 
-> 解决 ESLint 中的样式规范和 prettier 中样式规范的冲突，以 prettier 的样式规范为准，使 ESLint 中的样式规范自动失效
+> 解决 `ESLint` 中的样式规范和 `prettier` 中样式规范的`冲突`，以 `prettier` 的样式规范`为准`，使 ESLint 中的样式规范自动失效
 
 ```bash
 # 安装插件 eslint-config-prettier
@@ -301,7 +303,7 @@ yarn add eslint-config-prettier --dev
 
 ### 项目下新建 .prettier.js
 
-> 配置 prettier 格式化规则:
+> 配置 `prettier` 格式化规则:
 
 ```js
 module.exports = {
@@ -313,15 +315,14 @@ module.exports = {
   semi: false,
   overrides: [
     {
-      files: "*.json",
+      files: '*.json',
       options: {
-        printWidth: 200
-      }
-    }
+        printWidth: 200,
+      },
+    },
   ],
-  arrowParens: "always"
+  arrowParens: 'always',
 }
-
 ```
 
 ### 项目下新建 .prettierignore
@@ -343,7 +344,7 @@ dist
 }
 ```
 
-上面配置完成后,可以运行以下命令测试下代码检查个格式化效果:
+上面配置完成后,可以运行以下`命令`测试下代码检查个`格式化`效果:
 
 ```bash
 # eslint 检查
@@ -353,9 +354,11 @@ yarn prettier
 ```
 
 ### 配置 husky + lint-staged
->使用husky + lint-staged助力团队编码规范, husky&lint-staged安装推荐使用 mrm, 它将根据 package.json 依赖项中的代码质量工具来安装和配置 husky 和 lint-staged，因此请确保在此之前安装并配置所有代码质量工具，如 Prettier 和 ESlint
+
+> 使用`husky` + `lint-staged`助力团队编码规范, husky&lint-staged 安装推荐使用 `mrm`, 它将根据 `package.json` 依赖项中的代码质量工具来安装和配置 husky 和 lint-staged，因此请确保在此之前安装并配置所有代码质量工具，如 `Prettier 和 ESlint`
 
 ### 首先安装 mrm
+
 ```bash
 npm i mrm -D --registry=https://registry.npm.taobao.org
 ```
@@ -369,16 +372,19 @@ npm i mrm -D --registry=https://registry.npm.taobao.org
 所以这个 `lint-staged`，对团队项目和开源项目来说，是一个很好的工具，它是对个人要提交的代码的一个规范和约束
 
 ### 安装 lint-staged
->mrm 安装 lint-staged 会自动把 husky 一起安装下来
+
+> `mrm` 安装 `lint-staged` 会`自动`把 `husky` 一起安装下来
+
 ```bash
 npx mrm lint-staged
 ```
 
-安装成功后会发现 package.json 中多了一下几个配置: 
+安装成功后会发现 `package.json` 中多了一下几个配置:
 
 ![](https://files.mdnice.com/user/16854/1e23c422-c2e4-4478-ae17-6c954382c935.png)
 
-因为我们要结合 prettier 代码格式化,所有修改一下配置: 
+因为我们要结合 `prettier` 代码格式化,所有修改一下配置:
+
 ```json
 "husky": {
     "hooks": {
@@ -396,21 +402,21 @@ npx mrm lint-staged
 
 好了,到这里代码格式化配置基本大功告成了!!!
 
-可以修改部分代码尝试 git commit ,你会发现代码将自动格式化:
+可以修改部分代码尝试 `git commit` ,你会发现代码将自动格式化:
 
-提交前的代码(发现编辑器爆红了): 
+提交前的代码(发现编辑器`爆红`了):
 
 ![](https://files.mdnice.com/user/16854/bb28c3a6-4751-459a-a87d-c4191f758e6b.png)
 
-执行 commit 操作,控制台可以看到走了哪些流程:
+执行 `commit` 操作,控制台可以看到走了哪些流程:
 
 ![](https://files.mdnice.com/user/16854/82a2612e-44d6-4015-acef-62606b1a23ce.png)
 
-commit 后的代码,是不是已经被格式化了
+`commit` 后的代码,是不是已经被格式化了
 
 ![](https://files.mdnice.com/user/16854/4abce158-2d3f-43e8-854a-70536c89d116.png)
 
-### 配置文件引用别名alias
+### 配置文件引用别名 alias
 
 > 直接修改 vite.config.ts 文件配置:
 
@@ -428,9 +434,58 @@ export default defineConfig({
     },
   },
 })
+```
+
+## 路由
+
+```bash
+# 安装路由
+yarn add vue-router@4
+```
+
+在 src 文件下新增 router 文件夹 => router.ts 文件,内容如下: 
+
+```js
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+
+const routes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    name: 'Login',
+    component: () => import('@/pages/login/Login.vue'), // 注意这里要带上 文件后缀.vue 
+  },
+]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+})
+
+export default router
 
 ```
 
+修改入口文件 mian.ts : 
+
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router/index'
+
+const app = createApp(App)
+
+app.use(router)
+
+app.mount('#app')
+
+```
+到这里路由的基础配置已经完成了,更多配置信息可以查看 `vue-router` 官方文档: 
+
+> vue-router: `https://next.router.vuejs.org/zh/guide/`
+
+
+## 统一请求封装
+>https://blog.csdn.net/weixin_47077674/article/details/120579335
 
 
 

@@ -26,7 +26,7 @@ module.exports = {
   plugins: ['vue', '@typescript-eslint', 'prettier'],
   rules: {
     '@typescript-eslint/ban-ts-ignore': 'off',
-    '@typescript-eslint/no-unused-vars':'off',
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-var-requires': 'off',
@@ -136,7 +136,6 @@ module.exports = {
     'switch-colon-spacing': 'warn',
     // 强制箭头函数的箭头前后使用一致的空格
     'arrow-spacing': 'warn',
-    'no-var': 'warn',
     'prefer-const': 'warn',
     'prefer-rest-params': 'warn',
     'no-useless-escape': 'warn',
@@ -145,7 +144,7 @@ module.exports = {
     'no-fallthrough': 'warn',
     'no-extra-boolean-cast': 'warn',
     'no-case-declarations': 'warn',
-    'no-async-promise-executor': 'warn'
+    'no-async-promise-executor': 'warn',
   },
   globals: {
     defineProps: 'readonly',
