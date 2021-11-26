@@ -368,13 +368,30 @@ npm i mrm -D --registry=https://registry.npm.taobao.org
 
 所以这个 `lint-staged`，对团队项目和开源项目来说，是一个很好的工具，它是对个人要提交的代码的一个规范和约束
 
-### 安装 husky
-```bash
-npx mrm husky
-```
 ### 安装 lint-staged
+>mrm 安装 lint-staged 会自动把 husky 一起安装下来
 ```bash
 npx mrm lint-staged
+```
+
+安装成功后会发现 package.json 中多了一下几个配置: 
+
+![](https://files.mdnice.com/user/16854/1e23c422-c2e4-4478-ae17-6c954382c935.png)
+
+因为我们要结合 prettier 代码格式化,所有修改一下配置: 
+```json
+"husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,vue,ts,tsx}": [
+      "yarn lint",
+      "prettier --write",
+      "git add"
+    ]
+  }
 ```
 
 ### 配置文件引用别名
