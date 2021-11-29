@@ -759,7 +759,7 @@ export const useMainStore = defineStore({
 ```
 组建中获取 store : 
 
-```vue
+```js
 <template>
   <div>{{mainStore.name}}</div>
 </template>
@@ -790,7 +790,7 @@ export const useMainStore = defineStore({
 })
 ```
 组件中使用: 
-```vue
+```js
 <template>
   <div>用户名:{{ mainStore.name }}<br />长度:{{ mainStore.nameLength }}</div>
   <hr/>
@@ -814,7 +814,7 @@ const updateName = ()=>{
 
 ### actions 
 
-这里与 `Vuex` 有极大的不同，`Pinia` 仅提供了一种方法来定义如何更改状态的规则，放弃 `mutations` 只依靠 `Actions`，这是一项重大的改变。
+>这里与 `Vuex` 有极大的不同，`Pinia` 仅提供了一种方法来定义如何更改状态的规则，放弃 `mutations` 只依靠 `Actions`，这是一项重大的改变。
 
 `Pinia` 让 `Actions` 更加的灵活：
 
