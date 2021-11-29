@@ -1,9 +1,6 @@
 //http.ts
 import axios from 'axios'
 import NProgress from 'nprogress'
-import type { App } from 'vue'
-// const CancelToken = axios.CancelToken
-// const source = CancelToken.source()
 
 // 设置请求头和请求路径
 axios.defaults.baseURL = '/api'
