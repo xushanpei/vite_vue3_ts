@@ -21,7 +21,21 @@
 
 Vue2 与 Vue3 最大的区别: Vue2 使用`Options API`而 Vue3 使用的`Composition API`
 
-生命周期钩子变化
+生命周期钩子变化: 
+
+```js
+Vue2 ~~~~~~~~~~~ vue3
+beforeCreate  -> setup()
+created       -> setup()
+beforeMount   -> onBeforeMount
+mounted       -> onMounted
+beforeUpdate  -> onBeforeUpdate
+updated       -> onUpdated
+beforeDestroy -> onBeforeUnmount
+destroyed     -> onUnmounted
+activated     -> onActivated
+deactivated   -> onDeactivated
+```
 
 ## 介绍 vite
 
@@ -418,7 +432,7 @@ npx mrm lint-staged
 
 ### 配置文件引用别名 alias
 
-> 直接修改 vite.config.ts 文件配置:
+> 直接修改 `vite.config.ts` 文件配置:
 
 ```js
 import { defineConfig } from 'vite'
@@ -436,6 +450,30 @@ export default defineConfig({
 })
 ```
 
+>修改 `tsconfig.json`
+
+```json
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*":["src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+}
+
+```
+
 ## 路由
 
 ```bash
@@ -443,7 +481,7 @@ export default defineConfig({
 yarn add vue-router@4
 ```
 
-在 src 文件下新增 router 文件夹 => router.ts 文件,内容如下: 
+在 `src` 文件下新增 `router` 文件夹 => `router.ts` 文件,内容如下: 
 
 ```js
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
@@ -465,7 +503,7 @@ export default router
 
 ```
 
-修改入口文件 mian.ts : 
+修改入口文件 `mian.ts` : 
 
 ```js
 import { createApp } from 'vue'
@@ -483,9 +521,339 @@ app.mount('#app')
 
 > vue-router: `https://next.router.vuejs.org/zh/guide/`
 
+`vue-router4.x` 支持 `typescript`，配置路由的类型是 `RouteRecordRaw`，这里 `meta` 可以让我们有更多的发挥空间，这里提供一些参考：
+
+- `title`:`string`; 页面标题，通常必选。
+- `icon?`:`string`; 图标，一般配合菜单使用。
+- `auth?`:`boolean`; 是否需要登录权限。
+- `ignoreAuth?`:`boolean`; 是否忽略权限。
+- `roles?`:`RoleEnum[]`; 可以访问的角色
+- `keepAlive?`:`boolean`; 是否开启页面缓存
+- `hideMenu?`:`boolean`; 有些路由我们并不想在菜单中显示，比如某些编辑页面。
+- `order?`:`number`; 菜单排序。
+- `frameUrl?`:`string`; 嵌套外链。
+
+>这里只提供一些思路，每个项目涉及到的业务都会存在些差异，这里就不作详细讲解了，根据自己业务需求做配置即可。
 
 ## 统一请求封装
->https://blog.csdn.net/weixin_47077674/article/details/120579335
+> 使用过 vue2.x 的同学应该对 axios 很熟悉了，这里我们直接使用 axios 做封装：
+
+```bash
+# 安装 axios 
+yarn add axios
+# 安装 nprogress 用于请求 loading 
+# 也可以根据项目需求自定义其它 loading
+yarn add nprogress
+# 类型声明，或者添加一个包含 `declare module 'nprogress'
+yarn add @types/nprogress --dev
+```
+
+实际使用中可以根据项目修改，比如`RESTful` `api`中可以自行添加`put`和`delete`请求,`ResType`也可以根据后端的通用返回值动态的去修改
+
+新增 `service` 文件夹，`service` 下新增 `http.ts` 文件以及 `api` 文件夹: 
+
+
+![](https://files.mdnice.com/user/16854/7c0d7393-fd70-4bfb-aae8-e750e3463625.png)
+
+
+`http.ts` : 用于`axios`封装
+```js
+//http.ts
+import axios from "axios"
+import NProgress from "nprogress"
+import type { App } from "vue"
+
+// 设置请求头和请求路径
+axios.defaults.baseURL = "/api"
+// 请求超时时间限制
+axios.defaults.timeout = 10000
+// 对某个请求请求头单独配置
+axios.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8"
+axios.interceptors.request.use(
+  (config) => {
+    // token
+    const token = window.sessionStorage.getItem("token")
+    if (token) {
+      config.headers.token = token
+    }
+    return config
+  },
+  (error) => {
+    return error
+  }
+)
+// 响应拦截
+axios.interceptors.response.use((res) => {
+  if (res.data.code === 111) {
+    sessionStorage.setItem("token", "")
+    // token过期操作
+  }
+  return res
+})
+
+interface ResType<T> {
+  code: number
+  data?: T
+  msg: string
+  err?: string
+}
+interface Http {
+  get<T>(url: string, params?: unknown): Promise<ResType<T>>
+  post<T>(url: string, params?: unknown): Promise<ResType<T>>
+  upload<T>(url: string, params: unknown): Promise<ResType<T>>
+  download(url: string): void
+}
+
+const http: Http = {
+  get(url, params) {
+    return new Promise((resolve, reject) => {
+      NProgress.start()
+      axios
+        .get(url, { params })
+        .then((res) => {
+          NProgress.done()
+          resolve(res.data)
+        })
+        .catch((err) => {
+          NProgress.done()
+          reject(err.data)
+        })
+    })
+  },
+  post(url, params) {
+    return new Promise((resolve, reject) => {
+      NProgress.start()
+      axios
+        .post(url, JSON.stringify(params))
+        .then((res) => {
+          NProgress.done()
+          resolve(res.data)
+        })
+        .catch((err) => {
+          NProgress.done()
+          reject(err.data)
+        })
+    })
+  },
+  upload(url, file) {
+    return new Promise((resolve, reject) => {
+      NProgress.start()
+      axios
+        .post(url, file, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .then((res) => {
+          NProgress.done()
+          resolve(res.data)
+        })
+        .catch((err) => {
+          NProgress.done()
+          reject(err.data)
+        })
+    })
+  },
+  download(url) {
+    const iframe = document.createElement("iframe")
+    iframe.style.display = "none"
+    iframe.src = url
+    iframe.onload = function () {
+      document.body.removeChild(iframe)
+    }
+    document.body.appendChild(iframe)
+  }
+}
+export default http
+```
+`api` : 项目中接口做统一管理，按照模块来划分
+
+在 `api` 文件下新增 `login` 文件夹,用于存放登录模块的请求接口,login 文件夹下分别新增 `login.ts` `types.ts` :
+
+login.ts: 
+```js
+import http from '@/service/http'
+import * as T from './types'
+
+const loginApi: T.ILoginApi = {
+    login(params){
+        return http.post('/login', params)
+    }
+
+}
+export default loginApi
+```
+types.ts: 
+```ts
+export interface ILoginParams {
+    userName: string
+    passWord: string | number
+}
+export interface ILoginApi {
+    login: (params: ILoginParams)=> Promise<any>
+}
+```
+
+至此,一个简单地请求封装完成了!!!!
+
+除了自己手动封装 axios ,这里还推荐一个vue3的请求库: `VueRequest`,非常好用,下面来看看 `VueRequest`有哪些比较好用的功能吧!!!
+
+- 🚀  所有数据都具有响应式
+- 🔄  轮询请求
+- 🤖  自动处理错误重试
+- 🗄  内置请求缓存
+- 💧  节流请求与防抖请求
+- 🎯  聚焦页面时自动重新请求
+- ⚙️  强大的分页扩展以及加载更多扩展
+- 📠  完全使用 Typescript 编写，具有强大的类型提示
+- ⚡️  兼容 Vite
+- 🍃  轻量化
+- 📦  开箱即用
+
+![](https://files.mdnice.com/user/16854/c587ba05-5a22-4024-a831-6fecffee5d20.png)
+
+是不是很强大💪
+
+>官网链接: https://www.attojs.com/
+
+## 状态管理 pinia
+>由于 vuex 4 对 typescript 的支持让人感到难过，所以状态管理弃用了 vuex 而采取了 pinia. pinia的作者是 Vue 核心团队成员
+
+尤大好像说 `pinia` 可能会代替 `vuex`，所以请放心使用。
+
+
+### 安装 pinia
+
+Pinia 与 Vuex 的区别：
+
+- `id` 是必要的，它将所使用 store 连接到 devtools。
+- 创建方式：`new Vuex.Store(...)`(vuex3)，`createStore(...)`(vuex4)。
+- 对比于 vuex3 ，state 现在是一个`函数返回对象`。
+- 没有 `mutations`，不用担心，state 的变化依然记录在 devtools 中。
+
+```bash
+# 安装
+yarn add pinia@next
+```
+
+main.ts 中增加 
+
+```js
+# 引入
+import { createPinia } from "pinia"
+# 创建根存储库并将其传递给应用程序
+app.use(createPinia())
+```
+
+在 `src` 文件夹下新增 `store` 文件夹,接在在 store 中新增 `main.ts`
+
+### 创建 `store`, mian.ts :
+
+```js
+import { defineStore } from 'pinia'
+
+export const useMainStore = defineStore({
+  id: 'mian',
+  state: () =>({
+    name: '超级管理员'
+  })
+})
+```
+组建中获取 store : 
+
+```vue
+<template>
+  <div>{{mainStore.name}}</div>
+</template>
+
+<script setup lang="ts">
+import { useMainStore } from "@/store/mian"
+
+const mainStore = useMainStore()
+
+</script>
+```
+### getters 用法介绍
+>Pinia 中的 getter 与 Vuex 中的 getter 、组件中的计算属性具有相同的功能
+
+`store` => `mian.ts`
+```js
+import { defineStore } from 'pinia'
+
+export const useMainStore = defineStore({
+  id: 'mian',
+  state: () => ({
+    name: '超级管理员',
+  }),
+  // getters
+  getters: {
+    nameLength: (state) => state.name.length,
+  }
+})
+```
+组件中使用: 
+```vue
+<template>
+  <div>用户名:{{ mainStore.name }}<br />长度:{{ mainStore.nameLength }}</div>
+  <hr/>
+  <button @click="updateName">修改store中的name</button>
+</template>
+
+<script setup lang="ts">
+import { useMainStore } from '@/store/mian'
+
+const mainStore = useMainStore()
+
+const updateName = ()=>{
+  // $patch 修改 store 中的数据
+  mainStore.$patch({
+    name: '名称被修改了,nameLength也随之改变了'
+  })
+}
+</script>
+```
+![](https://files.mdnice.com/user/16854/ab70ded8-aa34-456a-9044-ac560ff5d2d4.gif)
+
+### actions 
+
+这里与 `Vuex` 有极大的不同，`Pinia` 仅提供了一种方法来定义如何更改状态的规则，放弃 `mutations` 只依靠 `Actions`，这是一项重大的改变。
+
+`Pinia` 让 `Actions` 更加的灵活：
+
+- 可以通过组件或其他 `action` 调用
+- 可以从其他 `store` 的 `action` 中调用
+- 直接在 `store` 实例上调用
+- 支持`同步`或`异步`
+- 有任意数量的参数
+- 可以包含有关如何更改状态的逻辑（也就是 vuex 的 mutations 的作用）
+- 可以 `$patch` 方法直接更改状态属性
+
+```ts
+import { defineStore } from 'pinia'
+
+export const useMainStore = defineStore({
+  id: 'mian',
+  state: () => ({
+    name: '超级管理员',
+  }),
+  getters: {
+    nameLength: (state) => state.name.length,
+  },
+  actions: {
+    async insertPost(data:string){
+      // 可以做异步
+      // await doAjaxRequest(data);
+      this.name = data;
+    }
+  },
+})
+
+```
+
+## 环境变量配置
+
+
+## 集成组件库
+
+## 打包优化配置
 
 
 
@@ -494,16 +862,3 @@ app.mount('#app')
 1. https://mp.weixin.qq.com/s/cfw1KFdrwV8GzDN1pnu_kQ
 2. https://cn.vitejs.dev/guide/api-hmr.html
 
-- 文章概括
-  - 搭建前准备: Chrome 器插件 Vscode 插件
-  - 介绍 vue3.x
-  - 介绍 vite (vite 官方起步)
-  - 使用 vite 创建脚手架
-  - 设置代风格(eslint prettier gitHooks)
-  - 路由集成 (meta 增加缓存)
-  - 请求封装
-  - vuex/pinia
-  - 登录 和 布局组件
-  - 配置环境变量
-  - UI 组件库
-  - 打包优化

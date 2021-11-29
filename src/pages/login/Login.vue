@@ -1,16 +1,17 @@
 <template>
-  <div>这是login页面</div>
+  <div>用户名:{{ mainStore.name }}<br />长度:{{ mainStore.nameLength }}</div>
+  <hr />
+  <button @click="updateName">修改store中的name</button>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { useMainStore } from '@/store/mian'
 
-export default defineComponent({
-  name: 'LoginPage',
-  setup() {
-    const count = ref(0)
+const mainStore = useMainStore()
 
-    return { count }
-  },
-})
+const updateName = () => {
+  mainStore.$patch({
+    name: '名称被修改了,nameLength也随之改变了',
+  })
+}
 </script>
