@@ -517,25 +517,6 @@ css:{
   color: $test-color;
 }
 ```
-
-### autoprefixer 前缀自动补全
-
-```bash
-# 安装
-yarn add postcss --dev
-yarn add autoprefixer --dev
-```
-
-新增 `postcss.config.ts`:
-
-```ts
-module.exports = {
-  plugins: {
-    autoprefixer: {},
-  },
-};
-```
-
 ## 路由
 
 ```bash
