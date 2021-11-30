@@ -21,7 +21,7 @@
 
 Vue2 与 Vue3 最大的区别: Vue2 使用`Options API`而 Vue3 使用的`Composition API`
 
-生命周期钩子变化: 
+生命周期钩子变化:
 
 ```js
 Vue2 ~~~~~~~~~~~ vue3
@@ -52,11 +52,11 @@ deactivated   -> onDeactivated
 
 它主要由两部分组成：
 
-- 一个开发服务器，它基于 原生 ES 模块 提供了 丰富的内建功能，如速度快到惊人的 模块热更新（HMR）。
+- 一个开发服务器，它基于 原生 `ES` 模块 提供了 丰富的内建功能，如速度快到惊人的 模块热更新（HMR）。
 
-- 一套构建指令，它使用 Rollup 打包你的代码，并且它是预配置的，可以输出用于生产环境的优化过的静态资源。
+- 一套构建指令，它使用 `Rollup` 打包你的代码，并且它是预配置的，可以输出用于生产环境的优化过的静态资源。
 
-- Vite 意在提供开箱即用的配置，同时它的 插件 API 和 JavaScript API 带来了高度的可扩展性，并有完整的类型支持。
+- Vite 意在提供开箱即用的配置，同时它的 插件 API 和 JavaScript API 带来了高度的`可扩展性`，并有完整的类型支持。
 
 ## 使用 vite 快速创建脚手架
 
@@ -450,7 +450,7 @@ export default defineConfig({
 })
 ```
 
->修改 `tsconfig.json`
+> 修改 `tsconfig.json`
 
 ```json
 {
@@ -474,6 +474,68 @@ export default defineConfig({
 
 ```
 
+## 配置 css 预处理器 scss
+
+> 虽然 `vite` 原生支持 `less/sass/scss/stylus`，但是你必须手动安装他们的预处理器依赖
+
+### 安装
+
+```bash
+yarn ass sass-loader --dev
+yarn add dart-sass --dev
+yarn add sass --dev
+```
+
+### 配置全局 scss 样式文件
+
+在 `src/assets` 下新增 `style` 文件夹，用于存放全局样式文件
+
+新建 `main.scss`, 设置一个用于测试的颜色`变量` :
+
+```scss
+$test-color: red;
+```
+
+如何将这个全局样式文件`全局注入`到项目中呢？配置 `Vite` 即可：
+
+```js
+css:{
+    preprocessorOptions:{
+      scss:{
+        additionalData:'@import "@/assets/style/mian.scss";'
+      }
+    }
+  },
+```
+
+### 组件中使用
+
+> 不需要任何引入可以直接使用全局`scss`定义的变量
+
+```scss
+.test{
+  color: $test-color;
+}
+```
+
+### autoprefixer 前缀自动补全
+
+```bash
+# 安装
+yarn add postcss --dev
+yarn add autoprefixer --dev
+```
+
+新增 `postcss.config.ts`:
+
+```ts
+module.exports = {
+  plugins: {
+    autoprefixer: {},
+  },
+};
+```
+
 ## 路由
 
 ```bash
@@ -481,7 +543,7 @@ export default defineConfig({
 yarn add vue-router@4
 ```
 
-在 `src` 文件下新增 `router` 文件夹 => `router.ts` 文件,内容如下: 
+在 `src` 文件下新增 `router` 文件夹 => `router.ts` 文件,内容如下:
 
 ```js
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
@@ -490,7 +552,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Login',
-    component: () => import('@/pages/login/Login.vue'), // 注意这里要带上 文件后缀.vue 
+    component: () => import('@/pages/login/Login.vue'), // 注意这里要带上 文件后缀.vue
   },
 ]
 
@@ -503,7 +565,7 @@ export default router
 
 ```
 
-修改入口文件 `mian.ts` : 
+修改入口文件 `mian.ts` :
 
 ```js
 import { createApp } from 'vue'
@@ -517,7 +579,8 @@ app.use(router)
 app.mount('#app')
 
 ```
-到这里路由的基础配置已经完成了,更多配置信息可以查看 `vue-router` 官方文档: 
+
+到这里路由的基础配置已经完成了,更多配置信息可以查看 `vue-router` 官方文档:
 
 > vue-router: `https://next.router.vuejs.org/zh/guide/`
 
@@ -533,15 +596,16 @@ app.mount('#app')
 - `order?`:`number`; 菜单排序。
 - `frameUrl?`:`string`; 嵌套外链。
 
->这里只提供一些思路，每个项目涉及到的业务都会存在些差异，这里就不作详细讲解了，根据自己业务需求做配置即可。
+> 这里只提供一些思路，每个项目涉及到的业务都会存在些差异，这里就不作详细讲解了，根据自己业务需求做配置即可。
 
 ## 统一请求封装
+
 > 使用过 vue2.x 的同学应该对 axios 很熟悉了，这里我们直接使用 axios 做封装：
 
 ```bash
-# 安装 axios 
+# 安装 axios
 yarn add axios
-# 安装 nprogress 用于请求 loading 
+# 安装 nprogress 用于请求 loading
 # 也可以根据项目需求自定义其它 loading
 yarn add nprogress
 # 类型声明，或者添加一个包含 `declare module 'nprogress'
@@ -550,30 +614,26 @@ yarn add @types/nprogress --dev
 
 实际使用中可以根据项目修改，比如`RESTful` `api`中可以自行添加`put`和`delete`请求,`ResType`也可以根据后端的通用返回值动态的去修改
 
-新增 `service` 文件夹，`service` 下新增 `http.ts` 文件以及 `api` 文件夹: 
-
+新增 `service` 文件夹，`service` 下新增 `http.ts` 文件以及 `api` 文件夹:
 
 ![](https://files.mdnice.com/user/16854/7c0d7393-fd70-4bfb-aae8-e750e3463625.png)
 
-
 `http.ts` : 用于`axios`封装
+
 ```js
 //http.ts
-import axios from "axios"
-import NProgress from "nprogress"
-import type { App } from "vue"
+import axios, { AxiosRequestConfig } from 'axios'
+import NProgress from 'nprogress'
 
 // 设置请求头和请求路径
-axios.defaults.baseURL = "/api"
-// 请求超时时间限制
+axios.defaults.baseURL = '/api'
 axios.defaults.timeout = 10000
-// 对某个请求请求头单独配置
-axios.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8"
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
 axios.interceptors.request.use(
-  (config) => {
-    // token
-    const token = window.sessionStorage.getItem("token")
+  (config): AxiosRequestConfig<any> => {
+    const token = window.sessionStorage.getItem('token')
     if (token) {
+      //@ts-ignore
       config.headers.token = token
     }
     return config
@@ -585,7 +645,7 @@ axios.interceptors.request.use(
 // 响应拦截
 axios.interceptors.response.use((res) => {
   if (res.data.code === 111) {
-    sessionStorage.setItem("token", "")
+    sessionStorage.setItem('token', '')
     // token过期操作
   }
   return res
@@ -640,7 +700,7 @@ const http: Http = {
       NProgress.start()
       axios
         .post(url, file, {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then((res) => {
           NProgress.done()
@@ -653,22 +713,25 @@ const http: Http = {
     })
   },
   download(url) {
-    const iframe = document.createElement("iframe")
-    iframe.style.display = "none"
+    const iframe = document.createElement('iframe')
+    iframe.style.display = 'none'
     iframe.src = url
     iframe.onload = function () {
       document.body.removeChild(iframe)
     }
     document.body.appendChild(iframe)
-  }
+  },
 }
 export default http
+
 ```
+
 `api` : 项目中接口做统一管理，按照模块来划分
 
 在 `api` 文件下新增 `login` 文件夹,用于存放登录模块的请求接口,login 文件夹下分别新增 `login.ts` `types.ts` :
 
-login.ts: 
+`login.ts`:
+
 ```js
 import http from '@/service/http'
 import * as T from './types'
@@ -681,7 +744,9 @@ const loginApi: T.ILoginApi = {
 }
 export default loginApi
 ```
-types.ts: 
+
+`types.ts`:
+
 ```ts
 export interface ILoginParams {
     userName: string
@@ -694,31 +759,31 @@ export interface ILoginApi {
 
 至此,一个简单地请求封装完成了!!!!
 
-除了自己手动封装 axios ,这里还推荐一个vue3的请求库: `VueRequest`,非常好用,下面来看看 `VueRequest`有哪些比较好用的功能吧!!!
+除了自己手动封装 axios ,这里还推荐一个 vue3 的请求库: `VueRequest`,非常好用,下面来看看 `VueRequest`有哪些比较好用的功能吧!!!
 
-- 🚀  所有数据都具有响应式
-- 🔄  轮询请求
-- 🤖  自动处理错误重试
-- 🗄  内置请求缓存
-- 💧  节流请求与防抖请求
-- 🎯  聚焦页面时自动重新请求
-- ⚙️  强大的分页扩展以及加载更多扩展
-- 📠  完全使用 Typescript 编写，具有强大的类型提示
-- ⚡️  兼容 Vite
-- 🍃  轻量化
-- 📦  开箱即用
+- 🚀 所有数据都具有响应式
+- 🔄 轮询请求
+- 🤖 自动处理错误重试
+- 🗄 内置请求缓存
+- 💧 节流请求与防抖请求
+- 🎯 聚焦页面时自动重新请求
+- ⚙️ 强大的分页扩展以及加载更多扩展
+- 📠 完全使用 Typescript 编写，具有强大的类型提示
+- ⚡️ 兼容 Vite
+- 🍃 轻量化
+- 📦 开箱即用
 
 ![](https://files.mdnice.com/user/16854/c587ba05-5a22-4024-a831-6fecffee5d20.png)
 
-是不是很强大💪
+是不是很强大 💪
 
->官网链接: https://www.attojs.com/
+> 官网链接: https://www.attojs.com/
 
 ## 状态管理 pinia
->由于 vuex 4 对 typescript 的支持让人感到难过，所以状态管理弃用了 vuex 而采取了 pinia. pinia的作者是 Vue 核心团队成员
+
+> 由于 vuex 4 对 typescript 的支持让人感到难过，所以状态管理弃用了 vuex 而采取了 pinia. pinia 的作者是 Vue 核心团队成员
 
 尤大好像说 `pinia` 可能会代替 `vuex`，所以请放心使用。
-
 
 ### 安装 pinia
 
@@ -734,7 +799,7 @@ Pinia 与 Vuex 的区别：
 yarn add pinia@next
 ```
 
-main.ts 中增加 
+main.ts 中增加
 
 ```js
 # 引入
@@ -757,7 +822,8 @@ export const useMainStore = defineStore({
   })
 })
 ```
-组建中获取 store : 
+
+组建中获取 store :
 
 ```js
 <template>
@@ -771,10 +837,13 @@ const mainStore = useMainStore()
 
 </script>
 ```
+
 ### getters 用法介绍
->Pinia 中的 getter 与 Vuex 中的 getter 、组件中的计算属性具有相同的功能
+
+> Pinia 中的 getter 与 Vuex 中的 getter 、组件中的计算属性具有相同的功能
 
 `store` => `mian.ts`
+
 ```js
 import { defineStore } from 'pinia'
 
@@ -789,7 +858,9 @@ export const useMainStore = defineStore({
   }
 })
 ```
-组件中使用: 
+
+组件中使用:
+
 ```js
 <template>
   <div>用户名:{{ mainStore.name }}<br />长度:{{ mainStore.nameLength }}</div>
@@ -810,11 +881,12 @@ const updateName = ()=>{
 }
 </script>
 ```
+
 ![](https://files.mdnice.com/user/16854/ab70ded8-aa34-456a-9044-ac560ff5d2d4.gif)
 
-### actions 
+### actions
 
->这里与 `Vuex` 有极大的不同，`Pinia` 仅提供了一种方法来定义如何更改状态的规则，放弃 `mutations` 只依靠 `Actions`，这是一项重大的改变。
+> 这里与 `Vuex` 有极大的不同，`Pinia` 仅提供了一种方法来定义如何更改状态的规则，放弃 `mutations` 只依靠 `Actions`，这是一项重大的改变。
 
 `Pinia` 让 `Actions` 更加的灵活：
 
@@ -850,16 +922,238 @@ export const useMainStore = defineStore({
 
 ## 环境变量配置
 
+> `vite` 提供了两种模式：具有开发服务器的`开发模式`（development）和`生产模式`（production）
 
-## 集成组件库
+项目根目录新建:`.env.development` :
 
-## 打包优化配置
+```env
+NODE_ENV=development
 
+VITE_APP_WEB_URL= 'YOUR WEB URL'
+```
 
+项目根目录新建:`.env.production` :
 
-参考:
+```env
+NODE_ENV=production
 
-1. https://mp.weixin.qq.com/s/cfw1KFdrwV8GzDN1pnu_kQ
-2. https://cn.vitejs.dev/guide/api-hmr.html
-3. vueUse
+VITE_APP_WEB_URL= 'YOUR WEB URL'
+```
 
+组件中使用：
+
+```js
+console.log(import.meta.env.VITE_APP_WEB_URL)
+```
+
+配置 `package.json`:
+
+> 打包区分开发环境和生产环境
+
+```json
+"build:dev": "vue-tsc --noEmit && vite build --mode development",
+"build:pro": "vue-tsc --noEmit && vite build --mode production",
+```
+
+## 使用组件库 Naive UI
+
+> 组件库选择，这里我们选择 `Naive UI` 至于为什么选择它？我可以直接说`尤大大`推荐的吗？
+
+- 官方介绍：
+  - 一个 `Vue 3` 组件库
+  - 比较完整，`主题可调`，使用 `TypeScript`，不算太慢
+  - 有点意思
+
+介绍还是比较谦虚的，既然`尤大`推荐，肯定有它的优势了!!!
+
+### 安装 Naive UI
+
+```bash
+# 安装 组件库
+yarn add naive-ui
+# 安装 字体
+yarn add vfonts
+```
+
+### 如何使用
+
+```js
+import { NButton } from "naive-ui"
+<n-button>naive-ui</n-button>
+```
+
+### 全局配置 Config Provider
+
+> 全局化配置设置内部组件的`主题`、`语言`和组件卸载于其他位置的 `DOM` 的类名。
+
+```html
+<n-config-provider :locale="zhCN" :theme="theme">
+    <!-- 容器 -->
+</n-config-provider>
+```
+
+尤其是主题配置这个功能，我真的很喜欢 ❤️
+
+> 组件库选择上不做任何强制，根据自己的项目需要选择合适的组件库即可
+
+## Vite 常用基础配置
+
+### 基础配置
+
+`运行` `代理` 和 `打包` 配置
+
+```js
+server: {
+    host: '0.0.0.0',
+    port: 3000,
+    open: true,
+    https: false,
+    proxy: {}
+},
+```
+
+生产环境去除 `console` `debugger`
+
+```js
+build:{
+  ...
+  terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true
+      }
+  }
+}
+```
+
+### 生产环境生成 .gz 文件
+
+> 开启 `gzip` 可以极大的压缩静态资源，对页面加载的速度起到了显著的作用。
+
+使用 `vite-plugin-compression` 可以 `gzip` 或 `brotli` 的方式来压缩资源，这一步需要服务器端的配合，`vite` 只能帮你打包出 `.gz` 文件。此插件使用简单，你甚至无需配置参数，引入即可。
+
+```bash
+# 安装
+yarn add --dev vite-plugin-compression
+```
+
+plugins 中添加：
+
+```js
+import viteCompression from 'vite-plugin-compression'
+
+// gzip压缩 生产环境生成 .gz 文件
+viteCompression({
+      verbose: true,
+      disable: false,
+      threshold: 10240,
+      algorithm: 'gzip',
+      ext: '.gz',
+    }),
+```
+
+### 最终 vite.config.ts
+
+```js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import path from 'path'
+//@ts-ignore
+import viteCompression from 'vite-plugin-compression'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  base: './', //打包路径
+  plugins: [
+    vue(),
+    // gzip压缩 生产环境生成 .gz 文件
+    viteCompression({
+      verbose: true,
+      disable: false,
+      threshold: 10240,
+      algorithm: 'gzip',
+      ext: '.gz',
+    }),
+  ],
+  // 配置别名
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
+  css:{
+    preprocessorOptions:{
+      scss:{
+        additionalData:'@import "@/assets/style/mian.scss";'
+      }
+    }
+  },
+  //启动服务配置
+  server: {
+    host: '0.0.0.0',
+    port: 8000,
+    open: true,
+    https: false,
+    proxy: {}
+  },
+  // 生产环境打包配置
+  //去除 console debugger
+  build: {
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+})
+
+```
+
+## 常用插件
+
+> 可以查看官方文档：https://vitejs.cn/plugins/
+
+- `@vitejs/plugin-vue` 提供 `Vue 3` 单文件组件支持
+- `@vitejs/plugin-vue-jsx` 提供 Vue 3 `JSX` 支持（通过 专用的 Babel 转换插件）
+- `@vitejs/plugin-legacy` 为打包后的文件提供传统浏览器`兼容性`支持
+- `unplugin-vue-components` 组件的按需自动导入
+- `vite-plugin-compression` 使用 gzip 或者 brotli 来压缩资源
+- .....
+
+## 非常推荐使用的 hooks 库
+
+> 因为`vue3.x`和`react hooks`真的很像，所以就称为 `hooks`
+
+`VueUse`：https://vueuse.org/
+
+![](https://files.mdnice.com/user/16854/cbf73b46-d22b-44e7-bca1-c33764e41784.png)
+
+看到这个库的第一眼，让我立马想到了 react 的 `ahooks`
+
+`VueUse` 是一个基于 `Composition API` 的实用函数集合。通俗的来说，这就是一个工具函数包，它可以帮助你快速实现一些常见的功能，免得你自己去写，解决重复的工作内容。以及进行了基于 Composition API 的封装。让你在 vue3 中更加得心应手。
+
+想要入手 vue3 的小伙伴，赶快学习起来吧！！！
+
+## 写在最后
+
+> `公众号`：`前端开发爱好者` 专注分享 `web` 前端相关`技术文章`、`视频教程`资源、热点资讯等，如果喜欢我的分享，给 🐟🐟 点一个`赞` 👍 或者 ➕`关注` 都是对我最大的支持。
+
+欢迎`长按图片加好友`，我会第一时间和你分享`前端行业趋势`，`面试资源`，`学习途径`等等。
+
+![](https://files.mdnice.com/user/16854/b382cc29-13f4-4cd7-86ae-c669cb7ae117.jpg)
+
+关注公众号后，在首页：
+
+- 回复`面试题`，获取最新大厂面试资料。
+- 回复`简历`，获取 3200 套 简历模板。
+- 回复`React实战`，获取 React 最新实战教程。
+- 回复`Vue实战`，获取 Vue 最新实战教程。
+- 回复`ts`，获取 TypeAcript 精讲课程。
+- 回复`vite`，获取 精讲课程。
+- 回复`uniapp`，获取 uniapp 精讲课程。
+- 回复`js书籍`，获取 js 进阶 必看书籍。
+- 回复`Node`，获取 Nodejs+koa2 实战教程。
+- 回复`数据结构算法`，获取 数据结构算法 教程。
+- 回复`架构师`，获取 架构师学习资源教程。
+- 更多教程资源应用尽有，欢迎`关注获取`
