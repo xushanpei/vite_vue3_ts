@@ -1112,9 +1112,11 @@ export default defineConfig({
 
 看到这个库的第一眼，让我立马想到了 react 的 `ahooks`
 
-`VueUse` 是一个基于 `Composition API` 的实用函数集合。通俗的来说，这就是一个工具函数包，它可以帮助你快速实现一些常见的功能，免得你自己去写，解决重复的工作内容。以及进行了基于 Composition API 的封装。让你在 vue3 中更加得心应手。
+`VueUse` 是一个基于 `Composition API` 的实用函数集合。通俗的来说，这就是一个`工具函数`包，它可以帮助你快速实现一些常见的功能，免得你自己去写，解决重复的工作内容。以及进行了基于 Composition API 的封装。让你在 vue3 中更加得心应手。
 
-想要入手 vue3 的小伙伴，赶快学习起来吧！！！
+💡想要入手 vue3 的小伙伴，赶快学习起来吧！！！
+
+💡最后给大家奉上仓库地址吧：https://github.com/xushanpei/vite_vue3_ts
 
 ## 写在最后
 
