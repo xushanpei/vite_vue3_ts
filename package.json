@@ -3,8 +3,8 @@
   "license": "ISC",
   "scripts": {
     "dev": "vite",
-    "build:dev": "vue-tsc --noEmit && vite build --mode development",
-    "build:pro": "vue-tsc --noEmit && vite build --mode production",
+    "build:dev": "vite build --mode development",
+    "build:pro": "vite build --mode production",
     "serve": "vite preview",
     "lint": "eslint src --fix --ext .ts,.tsx,.vue,.js,.jsx",
     "prettier": "prettier --write .",
