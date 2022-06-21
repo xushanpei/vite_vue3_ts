@@ -502,7 +502,7 @@ $test-color: red;
 css:{
     preprocessorOptions:{
       scss:{
-        additionalData:'@import "@/assets/style/mian.scss";'
+        additionalData:'@import "@/assets/style/main.scss";'
       }
     }
   },
@@ -546,7 +546,7 @@ export default router
 
 ```
 
-修改入口文件 `mian.ts` :
+修改入口文件 `main.ts` :
 
 ```js
 import { createApp } from 'vue'
@@ -791,13 +791,13 @@ app.use(createPinia())
 
 在 `src` 文件夹下新增 `store` 文件夹,接在在 store 中新增 `main.ts`
 
-### 创建 `store`, mian.ts :
+### 创建 `store`, main.ts :
 
 ```js
 import { defineStore } from 'pinia'
 
 export const useMainStore = defineStore({
-  id: 'mian',
+  id: 'main',
   state: () =>({
     name: '超级管理员'
   })
@@ -812,7 +812,7 @@ export const useMainStore = defineStore({
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from "@/store/mian"
+import { useMainStore } from "@/store/main"
 
 const mainStore = useMainStore()
 
@@ -823,13 +823,13 @@ const mainStore = useMainStore()
 
 > Pinia 中的 getter 与 Vuex 中的 getter 、组件中的计算属性具有相同的功能
 
-`store` => `mian.ts`
+`store` => `main.ts`
 
 ```js
 import { defineStore } from 'pinia'
 
 export const useMainStore = defineStore({
-  id: 'mian',
+  id: 'main',
   state: () => ({
     name: '超级管理员',
   }),
@@ -850,7 +850,7 @@ export const useMainStore = defineStore({
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from '@/store/mian'
+import { useMainStore } from '@/store/main'
 
 const mainStore = useMainStore()
 
@@ -883,7 +883,7 @@ const updateName = ()=>{
 import { defineStore } from 'pinia'
 
 export const useMainStore = defineStore({
-  id: 'mian',
+  id: 'main',
   state: () => ({
     name: '超级管理员',
   }),
@@ -1065,7 +1065,7 @@ export default defineConfig({
   css:{
     preprocessorOptions:{
       scss:{
-        additionalData:'@import "@/assets/style/mian.scss";'
+        additionalData:'@import "@/assets/style/main.scss";'
       }
     }
   },

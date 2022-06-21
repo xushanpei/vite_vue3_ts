@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from '@/store/mian'
+import { useMainStore } from '@/store/main'
 import { NButton } from 'naive-ui'
 
 const mainStore = useMainStore()
